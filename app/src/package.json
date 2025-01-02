@@ -1,0 +1,25 @@
+{
+  "name": "jaykay-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "@hocuspocus/provider": "^2.15.0",
+    "@tiptap/core": "^2.11.0",
+    "@tiptap/extension-collaboration": "^2.11.0",
+    "@tiptap/extension-collaboration-cursor": "^2.11.0",
+    "@tiptap/pm": "^2.11.0",
+    "@tiptap/starter-kit": "^2.11.0",
+    "y-prosemirror": "^1.2.15",
+    "y-websocket": "^2.1.0",
+    "yjs": "^13.6.21"
+  }
+}

@@ -1,0 +1,132 @@
+/* General editor container styles */
+.tiptap {
+  background-color: #1e1e2e; /* Dark background */
+  color: #c5c8c9; /* Light text */
+  padding: 1rem; /* Spacing around content */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #2e2e3e; /* Subtle border */
+  font-family: 'Inter', sans-serif; /* Modern, clean font */
+  font-size: 1rem; /* Base font size */
+  line-height: 1.6; /* Comfortable line height */
+  overflow-wrap: break-word; /* Handle long words */
+}
+
+/* Placeholder text */
+.tiptap.is-empty::before {
+  content: attr(data-placeholder);
+  color: #6c757d; /* Subtle placeholder color */
+  font-style: italic;
+  pointer-events: none;
+}
+
+/* Formatting buttons (if applicable) */
+.tiptap-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: #282838; /* Slightly darker than editor background */
+  border-bottom: 1px solid #2e2e3e; /* Border separating toolbar */
+}
+
+.tiptap-toolbar button {
+  background-color: transparent;
+  color: #c5c8c9;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tiptap-toolbar button:hover {
+  background-color: #3e3e5e; /* Hover effect */
+}
+
+.tiptap-toolbar button.active {
+  background-color: #505072; /* Active button color */
+  color: #ffffff; /* Brighter text for active state */
+}
+
+/* Highlighted text */
+.tiptap mark {
+  background-color: #ffde7d; /* Yellow highlight */
+  color: #000; /* Contrast text */
+}
+
+/* Blockquote styling */
+.tiptap blockquote {
+  border-left: 4px solid #505072; /* Indication of blockquote */
+  padding-left: 1rem;
+  color: #8a8c9a; /* Softer text color */
+  font-style: italic;
+}
+
+/* Code block styling */
+.tiptap pre {
+  background-color: #282838;
+  color: #e5e5e5;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace; /* Monospace font for code */
+}
+
+/* Inline code styling */
+.tiptap code {
+  background-color: #2e2e3e;
+  color: #e5e5e5;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Links */
+.tiptap a {
+  color: #4a90e2; /* Blue links */
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.tiptap a:hover {
+  color: #72a8f2; /* Slightly lighter blue on hover */
+}
+
+/* Lists */
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5rem; /* Indent for lists */
+}
+
+.tiptap ul li::marker {
+  color: #c5c8c9; /* Light bullet points */
+}
+
+.tiptap ol li::marker {
+  color: #c5c8c9; /* Light numbering */
+}
+
+/* Headings */
+.tiptap h1 {
+  font-size: 2rem;
+  color: #ffffff; /* Brighter headings */
+  margin-bottom: 0.5rem;
+}
+
+.tiptap h2 {
+  font-size: 1.75rem;
+  color: #e0e0e0;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap h3 {
+  font-size: 1.5rem;
+  color: #c5c8c9;
+  margin-bottom: 0.5rem;
+}
+
+/* Horizontal rule */
+.tiptap hr {
+  border: none;
+  border-top: 1px solid #3e3e5e;
+  margin: 1rem 0;
+}
