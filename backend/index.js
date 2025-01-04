@@ -4,6 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const Y = require('yjs');
 
 const app = express();
 app.use(cors());
@@ -33,13 +34,19 @@ db.serialize(() => {
 app.post('/documents', (req, res) => {
   const { parent_id, title, content } = req.body;
 
-  if (!title) {
+  if (!title && title !== "") {
     return res.status(400).json({ error: 'Title is required' });
   }
 
+  const emptyYdoc = new Y.Doc();
+
+  // Serialize the Y.Doc to a string
+  const emptyYdocEncodedState = Y.encodeStateAsUpdate(emptyYdoc); // Encoded as binary
+  const emptyYdocEStringifiedState = Buffer.from(emptyYdocEncodedState).toString('base64'); // Convert to string
+
   db.run(
     `INSERT INTO documents (parent_id, title, content) VALUES (?, ?, ?)`,
-    [parent_id, title, content || ''],
+    [parent_id, title, content || emptyYdocEStringifiedState],
     function (err) {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -48,6 +55,32 @@ app.post('/documents', (req, res) => {
     }
   );
 });
+
+app.put('/documents/:id', (req, res) => {
+  const documentId = req.params.id;
+  const { title } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ error: 'Title is required' });
+  }
+
+  db.run(
+    `UPDATE documents SET title = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+    [title, documentId],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      if (this.changes === 0) {
+        return res.status(404).json({ error: 'Document not found' });
+      }
+
+      res.json({ id: documentId, title, message: 'Document title updated successfully' });
+    }
+  );
+});
+
 
 app.get('/documents', (req, res) => {
   db.all(`SELECT * FROM documents ORDER BY title`, [], (err, rows) => {
@@ -83,8 +116,30 @@ const hocuspocusServer = Server.configure({
   port: 3001,
   extensions: [
     new Database({
-      fetch: async ({documentName}) => {
-        console.log(`Loading document: ${documentName}`);
+      fetch: async ({documentId}) => {
+        console.log(`Loading document: ${documentId}`);
+        return new Promise((resolve, reject) => {
+          db.get(
+            `SELECT content FROM documents WHERE title = ?`,
+            [documentId],
+            (err, row) => {
+              if (err) {
+                console.error(err);
+                return reject(err);
+              }
+              if (!row) {
+                console.warn(`Document ${documentId} not found. Creating new.`);
+                resolve(null);
+              } else {
+                resolve(row.content || null);
+              }
+            }
+          );
+        });
+      },
+      store: async ({documentName, state}) => {
+        console.log(`Storing document: ${documentName}`);
+        const content = state; // Assuming state is a string; adjust for actual data type
         return new Promise((resolve, reject) => {
           db.get(
             `SELECT content FROM documents WHERE title = ?`,
@@ -97,36 +152,30 @@ const hocuspocusServer = Server.configure({
               if (!row) {
                 console.warn(`Document ${documentName} not found. Creating new.`);
                 db.run(
-                  `INSERT INTO documents (title, content) VALUES (?, '')`,
-                  [documentName],
+                  `INSERT INTO documents (title, content) VALUES ('', null)`,
+                  [],
                   function (insertErr) {
                     if (insertErr) {
                       console.error(insertErr);
                       return reject(insertErr);
                     }
-                    resolve('');
+                    resolve();
                   }
                 );
-              } else {
-                resolve(row.content || '');
               }
-            }
-          );
-        });
-      },
-      store: async ({documentName, state}) => {
-        console.log(`Storing document: ${documentName}`);
-        const content = state; // Assuming state is a string; adjust for actual data type
-        return new Promise((resolve, reject) => {
-          db.run(
-            `UPDATE documents SET content = ?, updated_at = CURRENT_TIMESTAMP WHERE title = ?`,
-            [content, documentName],
-            function (err) {
-              if (err) {
-                console.error(err);
-                return reject(err);
+              else {
+                db.run(
+                  `UPDATE documents SET content = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
+                  [content, documentName],
+                  function (err) {
+                    if (err) {
+                      console.error(err);
+                      return reject(err);
+                    }
+                    resolve();
+                  }
+                );
               }
-              resolve();
             }
           );
         });
