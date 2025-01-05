@@ -43,11 +43,9 @@ const events = {
 
     window.store.currentDocument = data;
 
-    console.log("Loading editor for " + window.store.currentDocument.id)
-
     const provider = new HocuspocusProvider({
       url: "ws://localhost:3001",
-      name: window.store.currentDocument.id,
+      name: `${window.store.currentDocument.id}`, // lmao this needs to be a string or else it wont work...
     });
 
     new Editor({
@@ -57,8 +55,7 @@ const events = {
         Collaboration.extend().configure({
           document: provider.document,
         })
-      ],
-      content: '<p>Hello World!</p>',
+      ]
     })
 
     render('docTitle')

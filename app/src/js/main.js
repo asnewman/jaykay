@@ -11,14 +11,15 @@ const routes = {
   "/": () => {
     console.log(window.store)
     return `
-      ${nav()}
-      -div(id="docTitle")
+      -div(class="wrapper")
+      {${nav()}}
+      --div(id="docTitle")
       ${window.store.currentDocument ? `
-        --input(id="titleInput" type="text" value="${window.store.currentDocument.title}" oninput="updateTitle")
+        ---input(id="titleInput" type="text" value="${window.store.currentDocument.title}" oninput="updateTitle")
       ` : ""}
-      -h1()
-      --"${window.store.currentDocument?.title || ""}"
-      -div(class="editor")
+      --h1()
+      ---"${window.store.currentDocument?.title || ""}"
+      --div(class="editor")
       `
     }
 }

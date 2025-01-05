@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^6.0.5"
+    "vite": "^6.0.7"
   },
   "dependencies": {
     "@hocuspocus/provider": "^2.15.0",

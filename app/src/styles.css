@@ -130,3 +130,12 @@
   border-top: 1px solid #3e3e5e;
   margin: 1rem 0;
 }
+
+.nav {
+  background-color: #1e1e2e;
+  display: inline-block;
+}
+
+.navItem {
+  display: block;
+}

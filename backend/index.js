@@ -21,7 +21,7 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       parent_id INTEGER,
       title TEXT NOT NULL,
-      content TEXT DEFAULT '', -- Content of the document stored here
+      content TEXT, -- Content of the document stored here
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (parent_id) REFERENCES documents (id)
@@ -38,15 +38,9 @@ app.post('/documents', (req, res) => {
     return res.status(400).json({ error: 'Title is required' });
   }
 
-  const emptyYdoc = new Y.Doc();
-
-  // Serialize the Y.Doc to a string
-  const emptyYdocEncodedState = Y.encodeStateAsUpdate(emptyYdoc); // Encoded as binary
-  const emptyYdocEStringifiedState = Buffer.from(emptyYdocEncodedState).toString('base64'); // Convert to string
-
   db.run(
     `INSERT INTO documents (parent_id, title, content) VALUES (?, ?, ?)`,
-    [parent_id, title, content || emptyYdocEStringifiedState],
+    [parent_id, title, content || null],
     function (err) {
       if (err) {
         return res.status(500).json({ error: err.message });
@@ -116,33 +110,35 @@ const hocuspocusServer = Server.configure({
   port: 3001,
   extensions: [
     new Database({
-      fetch: async ({documentId}) => {
-        console.log(`Loading document: ${documentId}`);
+      fetch: async ({documentName}) => {
+        // documentName is the id of the document
+        console.log(`Loading document: ${documentName}`);
         return new Promise((resolve, reject) => {
           db.get(
-            `SELECT content FROM documents WHERE title = ?`,
-            [documentId],
+            `SELECT content FROM documents WHERE id = ?`,
+            [documentName],
             (err, row) => {
               if (err) {
                 console.error(err);
                 return reject(err);
               }
               if (!row) {
-                console.warn(`Document ${documentId} not found. Creating new.`);
+                console.warn(`Document ${documentName} not found. Creating new.`);
                 resolve(null);
               } else {
-                resolve(row.content || null);
+                resolve(row.content);
               }
             }
           );
         });
       },
       store: async ({documentName, state}) => {
+        // documentName is the id of the document
         console.log(`Storing document: ${documentName}`);
         const content = state; // Assuming state is a string; adjust for actual data type
         return new Promise((resolve, reject) => {
           db.get(
-            `SELECT content FROM documents WHERE title = ?`,
+            `SELECT content FROM documents WHERE id = ?`,
             [documentName],
             (err, row) => {
               if (err) {
