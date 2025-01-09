@@ -3,8 +3,6 @@
   background-color: #1e1e2e; /* Dark background */
   color: #c5c8c9; /* Light text */
   padding: 1rem; /* Spacing around content */
-  border-radius: 8px; /* Rounded corners */
-  border: 1px solid #2e2e3e; /* Subtle border */
   font-family: 'Inter', sans-serif; /* Modern, clean font */
   font-size: 1rem; /* Base font size */
   line-height: 1.6; /* Comfortable line height */
@@ -131,11 +129,44 @@
   margin: 1rem 0;
 }
 
+#ashjs {
+  height: 100vh;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+}
+
 .nav {
   background-color: #1e1e2e;
   display: inline-block;
+  width: 100px;
+  height: 100%;
+  border-right: white .5px solid;
 }
 
 .navItem {
   display: block;
+  color: #FFF;
+  background-color: transparent;
+  border: none;
+  border-bottom: white .5px solid;
+  width: 100%;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#docTitle {
+  width: 100%;
+  padding: 1rem;
+  background-color: #1e1e2e;
+}
+
+#titleInput {
+  background-color: #1e1e2e;
+  color: #FFF;
+  border: none;
+  padding: 3px;
+  font-size: 16px;
 }
