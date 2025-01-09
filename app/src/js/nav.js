@@ -5,21 +5,20 @@ function nav() {
 
   return `
     -div(id="nav" class="nav")
-    --button(class="navItem" onclick="getDocuments")
-    ---"Get Documents"
     --button(class="navItem" onclick='switchDocument(null)')
     ---"New document"
     --div(id="documents")
-    ${navItems}
+    --{${navItems}}
   `
 }
 
 function navItem(document) {
+  delete document["content"]
   const documentString = JSON.stringify(document)
   // hyphen placement is temporary because of https://github.com/asnewman/ashjs/issues/9
   return `
-    --button(class="navItem" onclick='switchDocument(${documentString})')
-    ---"${document.title}"
+    -button(class="navItem" onclick='switchDocument(${documentString})')
+    --"${document.title}"
   `
 }
 

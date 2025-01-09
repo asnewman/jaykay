@@ -2,11 +2,13 @@
 .tiptap {
   background-color: #1e1e2e; /* Dark background */
   color: #c5c8c9; /* Light text */
-  padding: 1rem; /* Spacing around content */
+  padding: 0 1rem; /* Spacing around content */
   font-family: 'Inter', sans-serif; /* Modern, clean font */
   font-size: 1rem; /* Base font size */
   line-height: 1.6; /* Comfortable line height */
   overflow-wrap: break-word; /* Handle long words */
+  width: 100%;
+  cursor: text;
 }
 
 /* Placeholder text */
@@ -131,6 +133,7 @@
 
 #ashjs {
   height: 100vh;
+  background-color: #1e1e2e;
 }
 
 .wrapper {
@@ -139,9 +142,9 @@
 }
 
 .nav {
-  background-color: #1e1e2e;
+  background-color: #26263b;
   display: inline-block;
-  width: 100px;
+  width: 200px;
   height: 100%;
   border-right: white .5px solid;
 }
@@ -151,22 +154,41 @@
   color: #FFF;
   background-color: transparent;
   border: none;
-  border-bottom: white .5px solid;
   width: 100%;
   padding: 5px 10px;
   text-align: left;
+  color: #c5c8c9;
+}
+
+.navItem:hover {
+  background-color: #4f4f80;
+  cursor: pointer;
+}
+
+#editorUnder {
+  height: 100%;
+  cursor: text;
+}
+
+#titleEditorWrapper {
+  width: 70%;
+  max-width: 600px;
+  margin: 0 auto;
+  cursor: pointer;
 }
 
 #docTitle {
   width: 100%;
-  padding: 1rem;
+  padding: 8px;
   background-color: #1e1e2e;
 }
 
 #titleInput {
   background-color: #1e1e2e;
-  color: #FFF;
+  color: #c5c8c9;
   border: none;
   padding: 3px;
-  font-size: 16px;
+  font-size: 32px;
+  width: 100%;
+  font-weight: bold;
 }

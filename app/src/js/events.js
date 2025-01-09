@@ -4,22 +4,21 @@ import { HocuspocusProvider } from "@hocuspocus/provider";
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import * as Y from 'yjs'
+import { getDocuments } from "./helpers.js"
 
 const BASE_URL = 'http://localhost:3000';
 
 const events = {
   "getDocuments": async (_, render) => {
-    const response = await fetch(`${BASE_URL}/documents`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch documents');
-    }
-
-    const documents = await response.json();
-    window.store.documents = documents;
+    await getDocuments();
     
     render("nav")
   },
   "switchDocument": async (rawData, render) => {
+    if (window.store.editor) {
+      window.store.editor.destroy()
+    }
+
     let data = JSON.parse(rawData)
 
     if (!data) {
@@ -48,7 +47,7 @@ const events = {
       name: `${window.store.currentDocument.id}`, // lmao this needs to be a string or else it wont work...
     });
 
-    new Editor({
+    const editor = new Editor({
       element: document.querySelector('.editor'),
       extensions: [
         StarterKit,
@@ -57,6 +56,8 @@ const events = {
         })
       ]
     })
+   
+    window.store.editor = editor
 
     render('docTitle')
   },
@@ -72,6 +73,9 @@ const events = {
     });
 
     await response.json();
+  },
+  "focusEditor": () => {
+    window.store.editor.commands.focus("end")
   }
 }
 
