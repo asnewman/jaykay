@@ -3,8 +3,10 @@ import StarterKit from '@tiptap/starter-kit'
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import Placeholder from "@tiptap/extension-placeholder"
 import * as Y from 'yjs'
 import { getDocuments } from "./helpers.js"
+import Todo from "./todo-extension"
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -53,7 +55,11 @@ const events = {
         StarterKit,
         Collaboration.extend().configure({
           document: provider.document,
-        })
+        }),
+        Placeholder.configure({
+          placeholder: "Write something..."
+        }),
+        Todo
       ]
     })
    
@@ -74,9 +80,9 @@ const events = {
 
     await response.json();
   },
-  "focusEditor": () => {
-    window.store.editor.commands.focus("end")
-  }
+  // "focusEditor": () => {
+  //   window.store.editor.commands.focus("end")
+  // }
 }
 
 export {

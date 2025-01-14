@@ -2,7 +2,7 @@
 .tiptap {
   background-color: #1e1e2e; /* Dark background */
   color: #c5c8c9; /* Light text */
-  padding: 0 1rem; /* Spacing around content */
+  padding: 0rem; /* Spacing around content */
   font-family: 'Inter', sans-serif; /* Modern, clean font */
   font-size: 1rem; /* Base font size */
   line-height: 1.6; /* Comfortable line height */
@@ -131,6 +131,19 @@
   margin: 1rem 0;
 }
 
+.tiptap p.is-editor-empty:first-child::before {
+  color: #626464;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+p, ul {
+  margin-block-start: .25em;
+  margin-block-end: .25em;
+}
+
 #ashjs {
   height: 100vh;
   background-color: #1e1e2e;
@@ -179,16 +192,19 @@
 
 #docTitle {
   width: 100%;
-  padding: 8px;
   background-color: #1e1e2e;
+  margin: 10px 0;
 }
 
 #titleInput {
   background-color: #1e1e2e;
   color: #c5c8c9;
   border: none;
-  padding: 3px;
   font-size: 32px;
   width: 100%;
   font-weight: bold;
+}
+
+#titleInput::placeholder {
+  color: #626464;
 }

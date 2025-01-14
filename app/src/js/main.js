@@ -17,7 +17,7 @@ getDocuments().then(() => {
         --div(id="titleEditorWrapper")
         ---div(id="docTitle")
         ${window.store.currentDocument ? `
-          ----input(id="titleInput" type="text" value="${window.store.currentDocument.title}" oninput="updateTitle")
+          ----input(id="titleInput" type="text" placeholder="New document" value="${window.store.currentDocument.title}" oninput="updateTitle" onblur="getDocuments")
         ` : ""}
         ---div(class="editor")
         ---div(id="editorUnder" onclick="focusEditor")

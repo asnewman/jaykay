@@ -306,6 +306,7 @@
         this.cursor++;
         while (this.tokens[this.cursor].type !== 4 /* R_PAREN */ && this.cursor < this.tokens.length) {
           if (this.tokens[this.cursor].type !== 9 /* WORD */) {
+            console.log(this.tokens[this.cursor - 1])
             throw new Error("Expected attribute for tag");
           }
           const attributeName = this.tokens[this.cursor].value;
