@@ -208,3 +208,28 @@ p, ul {
 #titleInput::placeholder {
   color: #626464;
 }
+
+.todo {
+  background-color: #d71e8d1a;
+  color: #d71e8d;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.prog {
+  background-color: #f9ffc71a;
+  color: #a9ba1e;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.done {
+  background-color: #a8e1ff1a;
+  color: #5cc7ff;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.todo-description {
+  color: #fff;
+}

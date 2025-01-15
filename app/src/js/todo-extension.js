@@ -3,10 +3,7 @@ import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core';
 const Todo = Node.create({
   name: 'todo',
   group: 'inline',
-  // content: 'text',
   inline: true,
-  // selectable: false,
-  // atom: true,
 
   addAttributes() {
     return {
@@ -36,8 +33,20 @@ const Todo = Node.create({
   },
 
   renderHTML(attributes) {
-    console.log(attributes)
-    return ['span', mergeAttributes(attributes.HTMLAttributes, { 'data-type': 'todo', class: "todo" }), `${attributes.node.attrs.state} ${attributes.node.attrs.description}`];
+    const stateElement = document.createElement('span');
+    stateElement.textContent = attributes.node.attrs.state;
+    stateElement.className = `todo-state`
+
+    const descriptionElement = document.createElement('span');
+    descriptionElement.textContent = " " + attributes.node.attrs.description;
+    descriptionElement.className = "todo-description"
+
+    return [
+        'span', 
+        mergeAttributes(attributes.HTMLAttributes, { 'data-type': 'todo', class: `${attributes.node.attrs.state.toLowerCase()}` }), 
+        stateElement,
+        descriptionElement
+    ];
   },
 
   // addNodeView() {
@@ -82,15 +91,16 @@ const Todo = Node.create({
   // },
 
   addInputRules() {
+    const regex = /((?:TODO|PROG|DONE)\b\s+.*?\.)$/;
+
     return [
       nodeInputRule({
-        find: /^(TODO|IP|DONE)\b\s+(.*?\.)$/,
+        find: regex,
         type: this.type,
         getAttributes: (match) => {
-          console.log(match)
           return {
-            state: match[1],
-            description: match[2]
+            state: match[1].slice(0, 4),
+            description: match[1].slice(5)
           }
         }
       })
