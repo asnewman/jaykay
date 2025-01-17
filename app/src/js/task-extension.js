@@ -30,7 +30,7 @@ const Task = Node.create({
     return ({editor, node, getPos}) => {
       const { view } = editor;
 
-      const dom = document.createElement("div")
+      const dom = document.createElement("span")
       dom.classList.add(node.attrs.status.toLowerCase())
       dom.classList.add("task")
 
