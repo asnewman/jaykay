@@ -6,7 +6,7 @@ import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import Placeholder from "@tiptap/extension-placeholder"
 import * as Y from 'yjs'
 import { getDocuments } from "./helpers.js"
-import Todo from "./todo-extension"
+import Task from "./task-extension"
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -37,7 +37,6 @@ const events = {
     }
 
       const newDocument = await response.json();
-      console.log(newDocument)
 
       data = newDocument
     }
@@ -59,7 +58,7 @@ const events = {
         Placeholder.configure({
           placeholder: "Write something..."
         }),
-        Todo
+        Task
       ]
     })
    

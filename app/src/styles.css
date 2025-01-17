@@ -209,27 +209,41 @@ p, ul {
   color: #626464;
 }
 
-.todo {
-  background-color: #d71e8d1a;
-  color: #d71e8d;
+.task {
   border-radius: 4px;
   padding: 2px 4px;
+}
+
+.task button {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+}
+
+.todo {
+  background-color: #d71e8d1a;
+}
+
+.todo button {
+  color: #d71e8d;
 }
 
 .prog {
   background-color: #f9ffc71a;
+}
+
+.prog button {
   color: #a9ba1e;
-  border-radius: 4px;
-  padding: 2px 4px;
 }
 
 .done {
   background-color: #a8e1ff1a;
-  color: #5cc7ff;
-  border-radius: 4px;
-  padding: 2px 4px;
 }
 
-.todo-description {
+.done button {
+  color: #5cc7ff;
+}
+
+.task-description {
   color: #fff;
 }
