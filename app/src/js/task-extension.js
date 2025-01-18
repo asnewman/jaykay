@@ -1,9 +1,11 @@
-import { mergeAttributes, Node } from "@tiptap/core";
+import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
 
 const Task = Node.create({
   name: "task",
-  group: "block",
-  content: "inline*",
+  group: "inline",
+  content: "text*",
+  isolating: true,
+  inline: true,
 
   addAttributes() {
     return {
@@ -23,7 +25,7 @@ const Task = Node.create({
   },
 
   renderHTML({HTMLAttributes}) {
-    return ["task", mergeAttributes(HTMLAttributes), 0]
+    return ["task", mergeAttributes(HTMLAttributes), HTMLAttributes.description]
   },
 
   addNodeView() {
@@ -64,8 +66,22 @@ const Task = Node.create({
 
   addKeyboardShortcuts() {
     return {
-      "Mod-l": () => this.editor.commands.insertContent("<task>This is default description text</task>")
+      "Mod-l": () => this.editor.commands.insertContent("<task></task>")
     }
+  },
+
+  addInputRules() {
+    const regex = /(TODO|PROG|DONE)/;
+    return [
+      nodeInputRule({
+        find: regex,
+        type: this.type,
+        getAttributes: (match) => ({
+          status: match[0],
+          description: "hello world"
+        })
+      })
+    ]
   }
 })
 
