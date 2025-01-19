@@ -4,7 +4,6 @@ const Task = Node.create({
   name: "task",
   group: "inline",
   content: "text*",
-  isolating: true,
   inline: true,
 
   addAttributes() {
@@ -66,7 +65,38 @@ const Task = Node.create({
 
   addKeyboardShortcuts() {
     return {
-      "Mod-l": () => this.editor.commands.insertContent("<task></task>")
+      "Mod-l": () => this.editor.commands.insertContent("<task></task>"),
+      ArrowRight: ({ editor }) => {
+        const { state } = editor
+        const { selection, doc } = state
+        const { $from, empty } = selection
+
+        if (!empty || $from.parent.type !== this.type) {
+          return false
+        }
+
+        const isAtEnd = $from.parentOffset === $from.parent.nodeSize - 2
+
+        if (!isAtEnd) {
+          return false
+        }
+
+        const after = $from.after()
+
+        if (after === undefined) {
+          return false
+        }
+
+        const nodeAfter = doc.nodeAt(after)
+        if (nodeAfter) {
+          return editor.commands.command(({ tr }) => {
+            tr.setSelection(Selection.near(doc.resolve(after)))
+            return true
+          })
+        }
+
+        return editor.commands.insertContentAt(after, " ")
+      },
     }
   },
 
