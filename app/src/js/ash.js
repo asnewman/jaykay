@@ -143,12 +143,14 @@
     "dialog",
     "script",
     "template",
-    "slot"
+    "slot",
+    "g"
   ]);
   var Tokenizer = class {
     cursor = 0;
     markup = "";
     result = [];
+    inAttributes = false;
     constructor(markup) {
       this.markup = markup;
     }
@@ -167,11 +169,13 @@
         if (this.markup[this.cursor] === "(") {
           this.result.push({ type: 3 /* L_PAREN */, value: "(" });
           this.cursor++;
+          this.inAttributes = true;
           continue;
         }
         if (this.markup[this.cursor] === ")") {
           this.result.push({ type: 4 /* R_PAREN */, value: ")" });
           this.cursor++;
+          this.inAttributes = false;
           continue;
         }
         if (this.markup[this.cursor] === "{") {
@@ -204,7 +208,7 @@
           this.cursor++;
         }
         let word = wordArr.join("");
-        if (htmlTags.has(word)) {
+        if (htmlTags.has(word) && !this.inAttributes) {
           const tokenizedHtmlTag = { type: 1 /* TAG */, value: word };
           this.result.push(tokenizedHtmlTag);
           continue;
@@ -220,6 +224,10 @@
       this.cursor++;
       const strArr = [];
       while (this.markup[this.cursor] !== startingQuoteSymbol && this.cursor < this.markup.length) {
+        if (this.markup[this.cursor] === "/") {
+          strArr.push(this.markup[this.cursor]);
+          this.cursor++;
+        }
         strArr.push(this.markup[this.cursor]);
         this.cursor++;
       }
@@ -306,12 +314,12 @@
         this.cursor++;
         while (this.tokens[this.cursor].type !== 4 /* R_PAREN */ && this.cursor < this.tokens.length) {
           if (this.tokens[this.cursor].type !== 9 /* WORD */) {
-            console.log(this.tokens[this.cursor - 1])
             throw new Error("Expected attribute for tag");
           }
           const attributeName = this.tokens[this.cursor].value;
           this.cursor++;
           if (this.tokens[this.cursor].type !== 2 /* EQUAL */) {
+            console.log(this.cursor, this.tokens)
             throw new Error("Expected = after attribute name");
           }
           this.cursor++;

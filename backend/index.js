@@ -45,7 +45,7 @@ app.post('/documents', (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
-      res.status(201).json({ id: this.lastID, parent_id, title });
+      res.status(201).json({ id: this.lastID, parent_id, title || "Untitled document" });
     }
   );
 });

@@ -29,7 +29,7 @@ const events = {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: '' }),
+        body: JSON.stringify({ title: 'Untitled document' }),
       });
 
       if (!response.ok) {
@@ -65,6 +65,7 @@ const events = {
     window.store.editor = editor
 
     render('docTitle')
+    render('topBar')
   },
   "updateTitle": async (data, render) => {
     const newTitle = document.getElementById('titleInput').value
