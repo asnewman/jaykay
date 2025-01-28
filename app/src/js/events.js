@@ -80,9 +80,24 @@ const events = {
 
     await response.json();
   },
-  // "focusEditor": () => {
-  //   window.store.editor.commands.focus("end")
-  // }
+  "deleteDoc": async (data, render, emit) => {
+    const response = await fetch(`${BASE_URL}/documents/${window.store.currentDocument.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (window.store.editor) {
+      window.store.editor.destroy()
+    }
+
+    window.store.currentDocument = null
+
+    emit("getDocuments")
+    render('docTitle')
+    render('topBar')
+  },
 }
 
 export {

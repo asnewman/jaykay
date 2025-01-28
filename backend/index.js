@@ -45,7 +45,7 @@ app.post('/documents', (req, res) => {
       if (err) {
         return res.status(500).json({ error: err.message });
       }
-      res.status(201).json({ id: this.lastID, parent_id, title || "Untitled document" });
+      res.status(201).json({ id: this.lastID, parent_id, title: title || "Untitled document" });
     }
   );
 });
@@ -71,6 +71,22 @@ app.put('/documents/:id', (req, res) => {
       }
 
       res.json({ id: documentId, title, message: 'Document title updated successfully' });
+    }
+  );
+});
+
+app.delete('/documents/:id', (req, res) => {
+  const documentId = req.params.id;
+
+  db.run(
+    `DELETE FROM documents WHERE id = ?`,
+    [documentId],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      res.send("success");
     }
   );
 });
