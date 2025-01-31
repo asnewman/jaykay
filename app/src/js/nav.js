@@ -4,11 +4,12 @@ function nav() {
   const navItems = window.store.documents.map(document => navItem(document)).join("");
 
   return `
-    -div(id="nav" class="nav")
-    --button(class="navItem" onclick='switchDocument(null)')
-    ---"New document"
-    --div(id="documents")
-    --{${navItems}}
+    -div(id="navWrapper")
+    --div(id="nav" class="nav")
+    ---button(class="navItem" onclick='switchDocument(null)')
+    ----"New document"
+    ---div(id="documents")
+    ---{${navItems}}
   `
 }
 

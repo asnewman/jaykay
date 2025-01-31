@@ -30,7 +30,6 @@ getDocuments().then(() => {
           ----input(id="titleInput" type="text" placeholder="New document" value="${window.store.currentDocument.title}" oninput="updateTitle" onblur="getDocuments")
         ` : ""}
         ---div(class="editor")
-        ---div(id="editorUnder" onclick="focusEditor")
         `
 
         return markup
