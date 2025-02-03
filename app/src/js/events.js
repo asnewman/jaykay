@@ -16,7 +16,7 @@ const events = {
     
     render("nav")
   },
-  "switchDocument": async (rawData, render) => {
+  "switchDocument": async (rawData, render, emit) => {
     if (window.store.editor) {
       window.store.editor.destroy()
     }
@@ -66,6 +66,7 @@ const events = {
 
     render('docTitle')
     render('topBar')
+    emit("getDocuments")
   },
   "updateTitle": async (data, render) => {
     const newTitle = document.getElementById('titleInput').value
@@ -81,6 +82,12 @@ const events = {
     await response.json();
   },
   "deleteDoc": async (data, render, emit) => {
+    const confirmed = confirm("Are you sure you want to delete this document?")
+
+    if (!confirmed) {
+      return
+    }
+
     const response = await fetch(`${BASE_URL}/documents/${window.store.currentDocument.id}`, {
       method: 'DELETE',
       headers: {
